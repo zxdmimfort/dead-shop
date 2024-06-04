@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "apps.users",
     "apps.categories",
     "debug_toolbar",
+    "mptt",
 ]
 
 MIDDLEWARE = [
