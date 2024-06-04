@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "dead-shop"
+version = "0.1.0"
+description = ""
+authors = ["mimfort <mimfort21@gmail.com>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.0.6"
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.4.7"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
