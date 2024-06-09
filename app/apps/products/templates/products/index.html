@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1 class="display-4">{{ title }}</h1>
+    <div class="list-group">
+        {% for item in items %}
+        <div class="list-group-item">
+            <h2>{{ item.name }}</h2>
+            <div class="d-flex w-100 justify-content-between"></div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}
