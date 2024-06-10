@@ -5,20 +5,25 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('categories', '0004_alter_category_slug'),
+        ("categories", "0004_alter_category_slug"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='category',
-            name='id',
-            field=models.IntegerField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False, unique=True),
+            model_name="category",
+            name="id",
+            field=models.IntegerField(
+                default=uuid.uuid4,
+                editable=False,
+                primary_key=True,
+                serialize=False,
+                unique=True,
+            ),
         ),
         migrations.AlterField(
-            model_name='category',
-            name='slug',
+            model_name="category",
+            name="slug",
             field=models.SlugField(max_length=150, unique=True),
         ),
     ]
