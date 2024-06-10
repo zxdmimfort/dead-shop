@@ -5,5 +5,5 @@ from apps.products import views
 
 
 urlpatterns = [
-    path("", views.index, name="index"),
+    path("", views.ProductsListView.as_view(), name="index"),
 ]
