@@ -13,6 +13,7 @@ class Category(MPTTModel, models.Model):
     parent = TreeForeignKey(
         "self", on_delete=models.CASCADE, null=True, blank=True, related_name="children"
     )
+    photo = models.ImageField(upload_to="categories", null=True, blank=True)
 
     def __str__(self):
         return self.name
