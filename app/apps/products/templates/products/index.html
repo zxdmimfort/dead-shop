@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="display-4">{{ title }}</h1>
+<div class="list-group">
+	{% for item in items %}
+	<div class="list-group-item">
+		<div class="row">
+		{% if item.image_url %}
+		<div class="col-6 col-md-4">
+			<img class="img-fluid rounded"src="{{ item.image_url }}">
+		</div>
+		{% endif %}
+		<div class="col-6 col-md-8">
+			<h1><a class="text-primary-emphasis" style="text-decoration: none;" href="{{ item.get_absolute_url }}">{{ item.name }}</a></h1>
+			<p>Количество: {{ item.stock }}</p>
+			<p>Цена: {{ item.price }} руб</p>
+			<p>Здесь будут отзывы</p>
+		</div>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+{% endblock %}

@@ -9,3 +9,6 @@ class Product(models.Model):
     stock = models.IntegerField()
     image_url = models.CharField(max_length=2083)
     category = models.ManyToManyField(Category, related_name="products", blank=True)
+
+    def get_absolute_url(self):
+        return f"/products/{self.id}/"
