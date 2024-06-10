@@ -1,4 +1,12 @@
-
+.nav-link.dropdown-toggle {
+	background-color: #4CAF50; /* Зеленый фон */
+	color: white; /* Белый цвет текста */
+	padding: 10px 20px;
+	border-radius: 5px;
+  }
+.text-center.dropdown-toggle:hover {
+	background-color: #45a049; /* Более темный зеленый при наведении */
+  }
 
 @media (max-width: 767.98px) {
 	.text-center{
