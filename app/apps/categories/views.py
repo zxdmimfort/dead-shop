@@ -2,7 +2,6 @@ from typing import Any
 from django.http import HttpRequest
 from django.http.response import HttpResponse as HttpResponse
 from django.shortcuts import redirect
-from django.urls import reverse
 from django.views.generic import ListView
 
 from apps.categories.models import Category

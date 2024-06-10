@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('categories', '0007_alter_category_options'),
+        ("categories", "0007_alter_category_options"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='category',
-            name='photo',
-            field=models.ImageField(blank=True, null=True, upload_to='categories'),
+            model_name="category",
+            name="photo",
+            field=models.ImageField(blank=True, null=True, upload_to="categories"),
         ),
     ]
