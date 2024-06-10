@@ -23,6 +23,6 @@ urlpatterns = [
     path("__debug__/", include("debug_toolbar.urls")),
     path("users/", include("apps.users.urls")),
     # path("users/", include("apps.users.urls")),
-    path("products/", include("apps.products.urls")),
-    # path("categories/", include("apps.categories.urls")),
+    path("products/", include("apps.products.urls", namespace="products")),
+    path("categories/", include("apps.categories.urls", namespace="categories")),
 ]

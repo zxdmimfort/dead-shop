@@ -18,7 +18,7 @@ class Category(MPTTModel, models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("dead-shop:product_list_by_category", args=[self.slug])
+        return reverse("categories:category_list", args=[self.slug])
 
     class MPTTMeta:
         order_insertion_by = ["name"]
