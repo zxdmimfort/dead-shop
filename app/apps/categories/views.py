@@ -1,7 +1,7 @@
 from typing import Any
 from django.http import HttpRequest
 from django.http.response import HttpResponse as HttpResponse
-from django.urls import reverse
+from django.shortcuts import redirect
 from django.views.generic import ListView
 
 from apps.categories.models import Category
@@ -20,7 +20,7 @@ class CategoryListView(ListView):
         if cat_slug:
             self.cat = self.model.objects.filter(slug=cat_slug).first()
             if self.cat and self.cat.is_leaf_node():
-                return reverse("products:index", args=[self.cat.slug])
+                return redirect("products:products_by_category", cat_slug=self.cat.slug)
         return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
