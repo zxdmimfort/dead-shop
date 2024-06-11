@@ -1,0 +1,17 @@
+{% extends base.html %}
+<body>
+    <h1>Cart</h1>
+    <ul>
+        {% for item in cart_items %}
+            <li>
+                {{ item.product.name }} - {{ item.amount }}
+                <form action="{% url 'cart:remove_from_cart' item.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Remove</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+    <p>Total price: {{ total_price }}</p>
+</body>
+</html>

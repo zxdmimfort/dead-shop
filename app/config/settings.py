@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "apps.products",
     "apps.users",
     "apps.categories",
+    "apps.cart",
     "debug_toolbar",
     "mptt",
 ]
