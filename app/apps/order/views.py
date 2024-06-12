@@ -1,9 +1,10 @@
 from django.views import View
-from django.shortcuts import render, redirect
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import DetailView, ListView
-from apps.cart.models import Cart, CartItem
+from django.db import transaction
 from .models import Order, OrderItem
+from apps.cart.models import Cart, CartItem
+from django.shortcuts import render, redirect
+from django.views.generic import DetailView, ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class CreateOrderView(LoginRequiredMixin, View):
     def get(self, request):
@@ -12,11 +13,12 @@ class CreateOrderView(LoginRequiredMixin, View):
 
     def post(self, request):
         cart = Cart.objects.get(client=request.user)
-        order = Order.objects.create(user=request.user)
-        cart_items = CartItem.objects.filter(cart=cart)
-        for item in cart_items:
-            OrderItem.objects.create(order=order, product=item.product, amount=item.amount)
-        cart_items.delete()
+        with transaction.atomic():
+            order = Order.objects.create(user=request.user)
+            cart_items = CartItem.objects.filter(cart=cart)
+            for item in cart_items:
+                OrderItem.objects.create(order=order, product=item.product, amount=item.amount)
+            cart_items.delete()
         return redirect('order_detail', order_id=order.id)
 
 class OrderDetailView(LoginRequiredMixin, DetailView):
