@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Order Confirmation</h1>
+<p>Thank you for your order!</p>
+<p>Order ID: {{ order.id }}</p>
+<p>Status: {{ order.get_status_display }}</p>
+<ul>
+    {% for item in order.items.all %}
+        <li>{{ item.amount }} x {{ item.product.name }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
