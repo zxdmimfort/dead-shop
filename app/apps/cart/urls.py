@@ -1,7 +1,7 @@
 from apps.cart import views
 from django.urls import path
 
-app_name="cart"
+app_name = "cart"
 
 urlpatterns = [
     path("", views.CartDetailView.as_view(), name="cart_detail"),
