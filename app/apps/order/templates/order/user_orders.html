@@ -18,9 +18,9 @@
 					<tbody>
 						{% for order in orders %}
 						<tr>
-							<td><a href="{% url 'user_orders' order.id %}" class="btn btn-sm btn-dark">{{order.id}}</a></td>
+							<td><a href="{% url 'order:order_detail' order.id %}" class="btn btn-sm btn-dark">{{order.id}}</a></td>
 							<td>{{order.created_at}}</td>
-							<td>{{order.status}}</td>
+							<td>{{order.get_status_display}}</td>
 						</tr>
 						{% endfor %}
 					</tbody>
