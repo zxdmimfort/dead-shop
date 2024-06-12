@@ -41,7 +41,12 @@ def add_to_cart(request, product_id):
     print(f"ID продукта: {product.id}")
     print(f"ID элемента корзины: {cart_item.id}")
     print(f"Количество элемента корзины: {cart_item.amount}")
-    return redirect("cart:cart_detail")
+    referer_url = request.META.get('HTTP_REFERER')
+    if referer_url:
+        return redirect(referer_url)
+    else:
+        return redirect("cart:cart_detail")
+    
 
 @login_required
 def delete_from_cart(request, item_id):

@@ -1,25 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Cart</title>
-</head>
-<body>
-    <h1>Cart</h1>
-    <ul>
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Корзина</h1>
         {% for item in cart_items %}
+        <ul>
             <li>
-                {% if item.photo %}
-                <img src="{{ item.photo.url }}">
+        <div class="list-group-item">
+            <div class="row">
+                {% if item.product.photo %}
+                <div class="col-6 col-md-4">
+                    <img class="img-fluid rounded" src="{{ item.product.photo.url }}" width="500">
+                </div>
                 {% endif %}
-                {{ item.product.name }} - {{ item.amount }}
+            </div>
+            <div>
+                <span>Название: {{ item.product.name }}  </span><br>
+                <span>Количество: {{ item.amount }}  </span> <br>
                 <form action="{% url 'cart:delete_from_cart' item.id %}" method="post">
                     {% csrf_token %}
                     <button type="submit">Remove</button>
                 </form>
-            </li>
+                <form action="{% url 'cart:add_to_cart' item.product.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Добавить еще 1</button>
+                </form>
+            </div>
+        </li>
+        </ul>
         {% endfor %}
     </ul>
-    <p>Total price: {{ total_price }}</p>
-</body>
-</html>
+    <h3>Итоговая цена: {{ total_price }}</h3>
+    <h2><a href="">Оплатить</a></h2>
+{% endblock %}
