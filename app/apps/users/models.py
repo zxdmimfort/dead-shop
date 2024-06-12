@@ -29,6 +29,7 @@ class ClientManager(BaseUserManager):
 
 
 class Client(AbstractUser):
+    username=None
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)

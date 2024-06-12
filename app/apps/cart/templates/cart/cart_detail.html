@@ -1,11 +1,16 @@
-{% extends base.html %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart</title>
+</head>
 <body>
     <h1>Cart</h1>
     <ul>
         {% for item in cart_items %}
             <li>
                 {{ item.product.name }} - {{ item.amount }}
-                <form action="{% url 'cart:remove_from_cart' item.id %}" method="post">
+                <form action="{% url 'cart:delete_from_cart' item.id %}" method="post">
                     {% csrf_token %}
                     <button type="submit">Remove</button>
                 </form>

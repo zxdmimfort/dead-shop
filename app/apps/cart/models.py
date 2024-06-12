@@ -1,7 +1,6 @@
-from django.db import models
-
 from apps.products.models import Product
 from apps.users.models import Client
+from django.db import models
 
 
 # Create your models here.
@@ -13,7 +12,7 @@ class Cart(models.Model):
 class CartItem(models.Model):
     cart=models.ForeignKey(Cart,on_delete=models.CASCADE)
     product=models.ForeignKey(Product,on_delete=models.CASCADE)
-    amount=models.IntegerField(blank=False)
+    amount=models.IntegerField(default=1,blank=False)
 
     def __str__(self):
         return self.product.name
