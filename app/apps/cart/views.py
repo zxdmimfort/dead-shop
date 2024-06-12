@@ -34,7 +34,7 @@ def add_to_cart(request, product_id):
     if not created:
         cart_item.amount += 1
     else:
-            cart_item.amount = 1
+        cart_item.amount = 1
 
     cart_item.save()
     print(f"ID корзины: {cart.id}")
@@ -50,21 +50,3 @@ def delete_from_cart(request, item_id):
     return redirect("cart:cart_detail")
 
 
-"""class CartAddView(LoginRequiredMixin,View):
-    def get(self, request, pk):
-        return redirect('cart:cart_detail')
-    
-    def post(self,request,product_id):
-        product=get_object_or_404(Product,id=product_id)
-        cart,created=CartItem.objects.get_or_create(client=request.user)
-        cart_item,created= CartItem.objects.get_or_create(cart=cart, product=product)
-        cart_item.amount+=1
-        cart.product.save()
-        return redirect("cart:cart_detail")
-       
-class CartRemoveView(LoginRequiredMixin,View):
-    def post(self, request,cart_item):
-        cart_item=get_object_or_404(CartItem,id=cart_item)
-        cart_item.delete()
-        return redirect("cart:detail")
-"""

@@ -9,6 +9,9 @@
     <ul>
         {% for item in cart_items %}
             <li>
+                {% if item.photo %}
+                <img src="{{ item.photo.url }}">
+                {% endif %}
                 {{ item.product.name }} - {{ item.amount }}
                 <form action="{% url 'cart:delete_from_cart' item.id %}" method="post">
                     {% csrf_token %}
