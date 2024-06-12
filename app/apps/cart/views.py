@@ -1,8 +1,10 @@
-from apps.products.models import Product
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.base import Model as Model
-from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import DetailView
+
+from apps.products.models import Product
 
 from .models import Cart, CartItem
 
@@ -24,17 +26,24 @@ class CartDetailView(LoginRequiredMixin, DetailView):
         )
         return context
 
-
+@login_required
 def add_to_cart(request, product_id):
-    product = Product.objects.get(id=product_id)
+    product = get_object_or_404(Product,id=product_id)
     cart, created = Cart.objects.get_or_create(client=request.user)
-    print(cart)
     cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
-    cart_item.amount += 1
+    if not created:
+        cart_item.amount += 1
+    else:
+            cart_item.amount = 1
+
     cart_item.save()
+    print(f"ID корзины: {cart.id}")
+    print(f"ID продукта: {product.id}")
+    print(f"ID элемента корзины: {cart_item.id}")
+    print(f"Количество элемента корзины: {cart_item.amount}")
     return redirect("cart:cart_detail")
 
-
+@login_required
 def delete_from_cart(request, item_id):
     cart_item = CartItem.objects.get(id=item_id)
     cart_item.delete()
