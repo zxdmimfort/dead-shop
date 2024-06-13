@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views.generic import CreateView
 
 from .forms import LoginForm, UserCreateForm
@@ -23,7 +23,7 @@ def sign_in(request):
             if user:
                 login(request, user)
                 print("success")
-                return render(request, "users/login.html")
+                return redirect("products:index")
             else:
                 print("error")
                 return render(request, "users/login.html")
@@ -33,4 +33,5 @@ def sign_in(request):
 
 
 def logout_view(request):
-    return logout(request)
+    logout(request)
+    return redirect("products:index")
