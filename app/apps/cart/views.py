@@ -27,8 +27,8 @@ class CartDetailView(LoginRequiredMixin, DetailView):
         return context
 
 @login_required
-def add_to_cart(request, product_id):
-    product = get_object_or_404(Product,id=product_id)
+def add_to_cart(request, product_uuid):
+    product = get_object_or_404(Product,id=product_uuid)
     cart, created = Cart.objects.get_or_create(client=request.user)
     cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
     if not created:

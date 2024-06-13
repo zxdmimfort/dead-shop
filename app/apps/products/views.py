@@ -22,3 +22,8 @@ class ProductsDetailView(DetailView):
     template_name = "products/detail.html"
     context_object_name = "item"
     pk_url_kwarg = "product_uuid"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["product_uuid"] = self.kwargs.get(self.pk_url_kwarg)
+        return context
