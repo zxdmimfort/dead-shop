@@ -19,7 +19,7 @@ class CreateOrderView(LoginRequiredMixin, View):
             for item in cart_items:
                 OrderItem.objects.create(order=order, product=item.product, amount=item.amount)
             cart_items.delete()
-        return redirect('order_detail', order_id=order.id)
+        return redirect('order:order_detail', order_id=order.id)
 
 class OrderDetailView(LoginRequiredMixin, DetailView):
     model = Order
