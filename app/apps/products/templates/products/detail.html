@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="display-4">{{ title }}</h1>
+<div class="row">
+	{% if item.photo %}
+	<div class="col-6 col-md-4">
+		<img class="img-fluid rounded" src="{{ item.photo.url }}" alt="">
+	</div>
+	{% endif %}
+	<div class="col-6 col-md-8">
+		<h1 class="text-primary-emphasis">{{ item.name }}</h1>
+		<p>Категория: {{ item.category }}</p>
+		<p>Цена: {{ item.price }}</p>
+		<p>Осталось: {{ item.stock }}</p>
+		<a class="btn btn-outline-success" href="{% url 'cart:add_to_cart' product_uuid %}">Добавить в корзину</a>
+	</div>
+</div>
+{% endblock %}

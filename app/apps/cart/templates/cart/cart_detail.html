@@ -1,33 +1,31 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h1>Корзина</h1>
-        {% for item in cart_items %}
-        <ul>
-            <li>
-        <div class="list-group-item">
-            <div class="row">
-                {% if item.product.photo %}
-                <div class="col-6 col-md-4">
-                    <img class="img-fluid rounded" src="{{ item.product.photo.url }}" width="500">
-                </div>
-                {% endif %}
-            </div>
-            <div>
-                <span>Название: {{ item.product.name }}  </span><br>
-                <span>Количество: {{ item.amount }}  </span> <br>
-                <form action="{% url 'cart:delete_from_cart' item.id %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit">Remove</button>
-                </form>
-                <form action="{% url 'cart:add_to_cart' item.product.id %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit">Добавить еще 1</button>
-                </form>
-            </div>
-        </li>
-        </ul>
-        {% endfor %}
-    </ul>
-    <h3>Итоговая цена: {{ total_price }}</h3>
-    <h2><a href="">Оплатить</a></h2>
+<h1>Корзина</h1>
+<div class="list-group">
+	{% for item in cart_items %}
+	<div class="list-group-item">
+		<div class="row">
+			{% if item.product.photo %}
+			<div class="col-6 col-md-4">
+				<img class="img-fluid rounded" src="{{ item.product.photo.url }}" width="500">
+			</div>
+			{% endif %}
+			<div class="col-6 col-md-8">
+				<p class="mb-2">Название: {{ item.product.name }}</p>
+				<p class="mb-2">Количество: {{ item.amount }}</p>
+				<form class="mb-2" action="{% url 'cart:delete_from_cart' item.id %}" method="post">
+					{% csrf_token %}
+					<button class="btn btn-outline-success" type="submit">Remove</button>
+				</form>
+				<form class="mb-2" action="{% url 'cart:add_to_cart' item.product.id %}" method="post">
+					{% csrf_token %}
+					<button class="btn btn-outline-success" type="submit">Добавить еще 1</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+<h3>Итоговая цена: {{ total_price }} руб.</h3>
+<a class="btn btn-success" href="{% url 'order:create_order' %}">Оплатить</a>
 {% endblock %}
