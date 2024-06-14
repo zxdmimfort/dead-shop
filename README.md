@@ -1,6 +1,8 @@
 ## Запуск
+Создать .env по образцу example.env
 ```sh
 poetry install
+docker compose up
 python ./app/manage.py migrate
 python ./app/manage.py runserver
 ```
