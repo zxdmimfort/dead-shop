@@ -2,7 +2,6 @@ from django.urls import path
 
 from apps.products import views
 
-
 app_name = "products"
 
 urlpatterns = [
@@ -12,5 +11,10 @@ urlpatterns = [
         views.ProductsListView.as_view(),
         name="products_by_category",
     ),
-    path("product/<uuid:product_uuid>/", views.ProductsDetailView.as_view(), name="detail_product")
+    path(
+        "product/<uuid:product_uuid>/",
+        views.ProductsDetailView.as_view(),
+        name="detail_product",
+    ),
+    path("search/", views.search, name="search"),
 ]

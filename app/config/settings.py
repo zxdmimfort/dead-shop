@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "apps.order",
     "debug_toolbar",
     "mptt",
+    "django_elasticsearch_dsl",
 ]
 
 MIDDLEWARE = [
@@ -90,7 +91,12 @@ DATABASES = {
     }
 }
 
-
+ELASTICSEARCH_DSL = {
+    "default": {
+        "hosts": "http://localhost:9200",  # Use https if TLS is enabled on Elasticsearch
+        "http_auth": ("elastic", "96W9aXB_-3cygLYZdQ5d"),
+    },
+}
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 

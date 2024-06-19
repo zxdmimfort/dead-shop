@@ -7,11 +7,13 @@ readme = "README.md"
 package-mode = false
 
 [tool.poetry.dependencies]
-python = "^3.12"
-django = "^5.0.6"
+python = "^3.11"
 django-debug-toolbar = "^4.4.2"
 django-mptt = "^0.16.0"
 pillow = "^10.3.0"
+django = "^5.0.6"
+django-elasticsearch-dsl = "^8.0"
+
 
 
 [tool.poetry.group.dev.dependencies]
