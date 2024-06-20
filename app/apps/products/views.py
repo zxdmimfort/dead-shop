@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import DetailView, ListView
-from elasticsearch_dsl import Search
+from elasticsearch_dsl.query import MultiMatch
 
 from apps.products.models import Product
 
@@ -34,15 +34,12 @@ class ProductsDetailView(DetailView):
 
 
 def search(request):
-    query = request.GET.get("q", "")
-    # s = ProductDocument().search().filter("term", name=query)
-    # s = Search(index="product_index").query(
-    # "multi_match", query=query, fields=["name", "category"]
-    # )
-    s = ProductDocument.search().query("match", name=query)
-    # response = s.execute()
-    # products = [hit for hit in response]
-    products = [hit for hit in s]
-    return render(
-        request, "products\search_results.html", {"products": products, "query": query}
-    )
+    query = request.GET.get("q")
+    context = {}
+    if query:
+        q = MultiMatch(query=query, fields=["name"], fuzziness="AUTO")
+        # s = ProductDocument.search().query("match", name=query).to_queryset()
+        s = ProductDocument.search().query(q).to_queryset()
+        context = {"products": s}
+
+    return render(request, "products\search_results.html", context)
