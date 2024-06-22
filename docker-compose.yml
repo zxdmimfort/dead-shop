@@ -1,13 +1,33 @@
 services:
+  elasticsearch:
+    image: elasticsearch:8.9.2
+    container_name: elastic
+    environment:
+      - node.name=elasticsearch
+      - cluster.name=elasticsearch-cluster
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=true
+      - ELASTIC_PASSWORD=96W9aXB_-3cygLYZdQ5d 
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
   db:
     image: postgres
-    restart: always
+    container_name: db
     env_file:
       - .env
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
 volumes:
+  esdata:
+    driver: local
   postgres_data:
