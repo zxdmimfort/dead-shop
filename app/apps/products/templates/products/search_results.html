@@ -1,20 +1,25 @@
 {% extends 'base.html' %}
 {% block content %}
-
-    {% if products %}
-            <div class="row">
-            {% for product in products %}
-                    <img class="img-fluid rounded" src="{{ product.photo.url }}">
-                <div class="col-6 col-md-8">
-                    <h2>{{ product.name }}</h2>
-                    <p>Price: {{ product.price }}</p>
-                    <p>Stock: {{ product.stock }}</p>
-                </div>
-            {% endfor %}
-            </div>
-        {% else %}
-            <p>Ничего не найдено</p>
-        {% endif %}
-
-
+<div class="list-group">
+	{% if products %}
+	{% for product in products %}
+	<div class="list-group-item">
+		<div class="row">
+		{% if product.photo %}
+			<div class="col-6 col-md-4">
+				<img class="img-fluid rounded" src="{{ product.photo.url }}">
+			</div>
+		{% endif %}
+			<div class="col-6 col-md-8">
+				<h2><a class="text-body" href="{{ product.get_absolute_url }}">{{ product.name }}</a></h2>
+				<p>Price: {{ product.price }}</p>
+				<p>Stock: {{ product.stock }}</p>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+{% else %}
+<p>Ничего не найдено</p>
+{% endif %}
+</div>
 {% endblock %}

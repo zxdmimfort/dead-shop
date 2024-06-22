@@ -13,3 +13,7 @@
     font-size: 12px;
 	}
 }
+
+a.text-body {
+	text-decoration: none;
+}

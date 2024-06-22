@@ -42,4 +42,4 @@ def search(request):
         s = ProductDocument.search().query(q).to_queryset()
         context = {"products": s}
 
-    return render(request, "products\search_results.html", context)
+    return render(request, "products/search_results.html", context)

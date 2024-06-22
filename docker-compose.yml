@@ -1,8 +1,6 @@
-version: '3.8' 
-
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.9.2
+    image: elasticsearch:8.9.2
     container_name: elastic
     environment:
       - node.name=elasticsearch
@@ -20,7 +18,6 @@ services:
       - esdata:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
-      - 9300:9300
 volumes:
   esdata:
     driver: local
