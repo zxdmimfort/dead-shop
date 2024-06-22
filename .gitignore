@@ -7,3 +7,5 @@
 **/*.json
 **/media
 **/db.sqbpro
+**/.env
+**/project_data.json

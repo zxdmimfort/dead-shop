@@ -6,7 +6,7 @@ from apps.users.models import Client
 
 # Create your models here.
 class Cart(models.Model):
-    client = models.OneToOneField(Client, on_delete=models.CASCADE,unique=True)
+    client = models.OneToOneField(Client, on_delete=models.CASCADE, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
 

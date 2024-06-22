@@ -18,6 +18,16 @@ services:
       - esdata:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
+  db:
+    image: postgres
+    container_name: db
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 volumes:
   esdata:
     driver: local
+  postgres_data:

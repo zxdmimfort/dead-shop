@@ -12,7 +12,9 @@ class Product(models.Model):
     price = models.FloatField()
     stock = models.IntegerField()
     photo = models.ImageField(upload_to="products", null=True, blank=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="products", null=True)
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE, related_name="products", null=True
+    )
 
     def get_absolute_url(self):
         return f"/products/product/{self.id}/"
