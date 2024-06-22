@@ -6,23 +6,42 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('categories', '0001_initial'),
+        ("categories", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Product',
+            name="Product",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False, unique=True)),
-                ('name', models.CharField(max_length=100)),
-                ('price', models.FloatField()),
-                ('stock', models.IntegerField()),
-                ('photo', models.ImageField(blank=True, null=True, upload_to='products')),
-                ('category', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='products', to='categories.category')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                        unique=True,
+                    ),
+                ),
+                ("name", models.CharField(max_length=100)),
+                ("price", models.FloatField()),
+                ("stock", models.IntegerField()),
+                (
+                    "photo",
+                    models.ImageField(blank=True, null=True, upload_to="products"),
+                ),
+                (
+                    "category",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="products",
+                        to="categories.category",
+                    ),
+                ),
             ],
         ),
     ]

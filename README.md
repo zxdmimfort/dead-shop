@@ -4,6 +4,7 @@
 poetry install
 docker compose up
 python ./app/manage.py migrate
+python ./app/manage.py search_index --rebuild
 python ./app/manage.py runserver
 ```
 ## Форматирование
