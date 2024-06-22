@@ -26,7 +26,7 @@ class CreateOrderView(LoginRequiredMixin, View):
             order = Order.objects.create(user=request.user)
             cart_items = CartItem.objects.filter(cart=cart)
             for item in cart_items:
-                product.stock -= item.amount
+                item.product.stock -= item.amount
                 product.save()
                 OrderItem.objects.create(order=order, product=item.product, amount=item.amount)
             cart_items.delete()
