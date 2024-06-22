@@ -27,7 +27,7 @@ class CreateOrderView(LoginRequiredMixin, View):
             cart_items = CartItem.objects.filter(cart=cart)
             for item in cart_items:
                 item.product.stock -= item.amount
-                product.save()
+                item.product.save()
                 OrderItem.objects.create(order=order, product=item.product, amount=item.amount)
             cart_items.delete()
         return redirect('order:order_detail', order_id=order.id)
