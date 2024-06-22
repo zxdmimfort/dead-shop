@@ -4,12 +4,11 @@ from dotenv import load_dotenv
 
 
 load_dotenv()
-DATABASE_URL = os.getenv("DATABASE_URL")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-SECRET_KEY = "django-insecure-nf)x-j(@x8w1=1c5k_taeik!69u(iy0g5!9!30si+3r+t**gde"
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 DEBUG = True
 
@@ -78,15 +77,15 @@ DATABASES = {
         "NAME": os.getenv("POSTGRES_DB", "postgres"),
         "USER": os.getenv("POSTGRES_USER", "postgres"),
         "PASSWORD": os.getenv("POSTGRES_PASSWORD", "postgres"),
-        "HOST": "localhost",
-        "PORT": 5432,
+        "HOST": os.getenv("POSTGRES_HOST", "localhost"),
+        "PORT": os.getenv("POSTGRES_PORT", 5432),
     }
 }
 
 ELASTICSEARCH_DSL = {
     "default": {
-        "hosts": "http://localhost:9200",  # Use https if TLS is enabled on Elasticsearch
-        "http_auth": ("elastic", "96W9aXB_-3cygLYZdQ5d"),
+        "hosts": f"http://{os.getenv('ELASTIC_HOST', 'localhost')}:{os.getenv('ELASTICSEARCH_PORT', 9200)}",  # Use https if TLS is enabled on Elasticsearch
+        "http_auth": (os.getenv("ELASTIC_USER", "elastic"), os.getenv("ELASTIC_PASSWORD")),
     },
 }
 # Password validation
@@ -128,7 +127,7 @@ AUTH_USER_MODEL = "users.Client"
 MEDIA_URL = "media/"
 
 STATIC_DIR = BASE_DIR.parent
-# STATIC_ROOT = BASE_DIR / "static/"
+STATIC_ROOT = STATIC_DIR / "static/"
 MEDIA_ROOT = BASE_DIR / "media/"
 
 STATICFILES_DIRS = [
