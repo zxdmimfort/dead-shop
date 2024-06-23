@@ -1,17 +1,31 @@
 services:
+  nginx:
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+    container_name: nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+    volumes:
+      - ./static:/app/static/
+      - ./media/:/app/media/
   app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./docker/app/Dockerfile
     container_name: app
     ports:
       - "8000:8000"
-    command: python ./app/manage.py runserver
     depends_on:
       - db
       - elasticsearch
     env_file:
       - .env
+    volumes:
+      - ./static/:/src/static/
+      - ./media/:/src/media/
   elasticsearch:
     image: elasticsearch:8.9.2
     container_name: elastic

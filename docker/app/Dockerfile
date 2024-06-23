@@ -7,4 +7,5 @@ COPY entrypoint.sh ./
 COPY app/ ./app
 RUN poetry install --only main
 RUN chmod +x ./entrypoint.sh
-ENTRYPOINT [ "poetry", "run", "./entrypoint.sh" ]
+# ENTRYPOINT [ "poetry", "run", "./entrypoint.sh" ]
+CMD ["poetry", "run", "python", "./app/manage.py", "runserver"]

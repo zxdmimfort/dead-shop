@@ -6,6 +6,7 @@
 **/.ruff_cache
 **/*.json
 **/media
+static/
 **/db.sqbpro
 **/.env
 **/project_data.json

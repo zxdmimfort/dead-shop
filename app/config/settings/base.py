@@ -1,18 +1,13 @@
 from pathlib import Path
 import os
-from dotenv import load_dotenv
 
 
-load_dotenv()
-
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-DEBUG = True
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 INTERNAL_IPS = ["127.0.0.1"]
 
@@ -84,8 +79,8 @@ DATABASES = {
 
 ELASTICSEARCH_DSL = {
     "default": {
-        "hosts": f"http://{os.getenv('ELASTIC_HOST', 'localhost')}:{os.getenv('ELASTICSEARCH_PORT', 9200)}",  # Use https if TLS is enabled on Elasticsearch
-        "http_auth": (os.getenv("ELASTIC_USER", "elastic"), os.getenv("ELASTIC_PASSWORD")),
+        "hosts": f"http://{os.getenv('ELASTIC_HOST')}:{os.getenv('ELASTIC_PORT')}",  # Use https if TLS is enabled on Elasticsearch
+        "http_auth": (os.getenv("ELASTIC_USER"), os.getenv("ELASTIC_PASSWORD")),
     },
 }
 # Password validation
@@ -128,7 +123,7 @@ MEDIA_URL = "media/"
 
 STATIC_DIR = BASE_DIR.parent
 STATIC_ROOT = STATIC_DIR / "static/"
-MEDIA_ROOT = BASE_DIR / "media/"
+MEDIA_ROOT = STATIC_DIR / "media/"
 
 STATICFILES_DIRS = [
     BASE_DIR / "static/",
