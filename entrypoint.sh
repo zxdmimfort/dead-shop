@@ -22,6 +22,5 @@ python ./app/manage.py search_index --rebuild -f
 python ./app/manage.py collectstatic --no-input
 # python ./app/manage.py loaddata ./db.json
 # python ./app/manage.py shell < ./config/create_superuser.py
-echo "РАЗ ДВА ТРИ"
-python /src/app/manage.py runserver 0.0.0.0:8000
-# exec "$@"
+
+exec "$@"

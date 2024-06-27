@@ -1,4 +1,6 @@
 FROM python:3.11-slim-buster
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 RUN apt-get update && apt-get install -y netcat
 WORKDIR /src
 COPY pyproject.toml poetry.lock ./
@@ -7,5 +9,4 @@ COPY entrypoint.sh ./
 COPY app/ ./app
 RUN poetry install --only main
 RUN chmod +x ./entrypoint.sh
-# ENTRYPOINT [ "poetry", "run", "./entrypoint.sh" ]
-CMD ["poetry", "run", "python", "./app/manage.py", "runserver"]
+ENTRYPOINT [ "poetry", "run", "./entrypoint.sh" ]

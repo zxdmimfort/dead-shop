@@ -9,7 +9,6 @@ services:
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - xpack.security.enabled=true
-      - ELASTIC_PASSWORD=96W9aXB_-3cygLYZdQ5d 
     ulimits:
       memlock:
         soft: -1
@@ -18,6 +17,8 @@ services:
       - esdata:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
+    env_file:
+      - docker.env
   db:
     image: postgres
     container_name: db
