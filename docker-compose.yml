@@ -9,6 +9,7 @@ services:
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - xpack.security.enabled=true
+      - logger.level=WARN
     ulimits:
       memlock:
         soft: -1
