@@ -44,10 +44,10 @@
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               {% if user.is_authenticated %}
                 <li><a class="dropdown-item" href="{% url 'order:user_orders' %}">Orders</a></li>
-                <li><a class="dropdown-item" href="{% url 'sign_out' %}">Logout</a></li>
+                <li><a class="dropdown-item" href="{% url 'users:sign_out' %}">Logout</a></li>
               {% else %}
-                <li><a class="dropdown-item" href="{% url 'sign_in' %}">Login</a></li>
-                <li><a class="dropdown-item" href="{% url 'sign_up' %}">Signup</a></li>
+                <li><a class="dropdown-item" href="{% url 'users:sign_in' %}">Login</a></li>
+                <li><a class="dropdown-item" href="{% url 'users:sign_up' %}">Signup</a></li>
               {% endif %}
             </ul>
           </li>
