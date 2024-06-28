@@ -6,6 +6,9 @@
 **/.ruff_cache
 **/*.json
 **/media
+static/
 **/db.sqbpro
 **/.env
+**/docker.env
+docker/certbot/
 **/project_data.json
