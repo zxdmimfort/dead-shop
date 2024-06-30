@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
 from .forms import LoginForm, UserCreateForm
@@ -9,7 +10,7 @@ from .models import Client
 class UserCreateView(CreateView):
     form_class = UserCreateForm
     template_name = "users/sign-up.html"
-    success_url = "users:login"
+    success_url = reverse_lazy("users:sign_in")
     model = Client
 
 

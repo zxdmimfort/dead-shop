@@ -26,9 +26,10 @@ class CartDetailView(LoginRequiredMixin, DetailView):
         )
         return context
 
+
 @login_required
 def add_to_cart(request, product_uuid):
-    product = get_object_or_404(Product,id=product_uuid)
+    product = get_object_or_404(Product, id=product_uuid)
     cart, created = Cart.objects.get_or_create(client=request.user)
     cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
     if not created:
@@ -41,17 +42,15 @@ def add_to_cart(request, product_uuid):
     print(f"ID продукта: {product.id}")
     print(f"ID элемента корзины: {cart_item.id}")
     print(f"Количество элемента корзины: {cart_item.amount}")
-    referer_url = request.META.get('HTTP_REFERER')
+    referer_url = request.META.get("HTTP_REFERER")
     if referer_url:
         return redirect(referer_url)
     else:
         return redirect("cart:cart_detail")
-    
+
 
 @login_required
 def delete_from_cart(request, item_id):
     cart_item = CartItem.objects.get(id=item_id)
     cart_item.delete()
     return redirect("cart:cart_detail")
-
-

@@ -1,13 +1,10 @@
-from django.conf import settings
 from django.shortcuts import render
 from django.views.generic import DetailView, ListView
-from elasticsearch import Elasticsearch
-from elasticsearch_dsl import MultiSearch, Q, Search
+from elasticsearch_dsl.query import MultiMatch
 
 from apps.products.models import Product
 
-client = Elasticsearch(hosts=[settings.ELASTICSEARCH_DSL["default"]["hosts"]])
-s = Search(using=client)
+from .documents import ProductDocument
 
 
 class ProductsListView(ListView):
@@ -38,20 +35,11 @@ class ProductsDetailView(DetailView):
 
 def search(request):
     query = request.GET.get("q")
+    context = {}
     if query:
-        q = Q("fuzzy", name={"value": query, "fuzziness": 0})
-        products = s.execute(q)
-        print(products)
-    return render(request, "products/search.html", {"products": products})
+        q = MultiMatch(query=query, fields=["name"], fuzziness="AUTO")
+        # s = ProductDocument.search().query("match", name=query).to_queryset()
+        s = ProductDocument.search().query(q).to_queryset()
+        context = {"products": s}
 
-
-"""ms = MultiSearch(index="products")
-        name_search = Q(
-            "fuzzy",
-            name={"value": query, "fuzziness": 2},
-            # category={"value": query, "fuzziness": 2},
-        )
-        category_search = Q("fuzzy", category={"value": query, "fuzziness": 2})
-        ms = ms.add(name_search)
-        ms = ms.add(category_search)
-        products = s.execute()"""
+    return render(request, "products/search_results.html", context)
