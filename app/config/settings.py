@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "apps.order",
     "debug_toolbar",
     "mptt",
+    "django_elasticsearch_dsl",
 ]
 
 MIDDLEWARE = [
@@ -90,6 +91,10 @@ DATABASES = {
     }
 }
 
+ELASTICSEARCH_DSL = {
+    "default": {"hosts": "http://localhost:9200"},
+    "http_auth": ("elastic", "96W9aXB_-3cygLYZdQ5d"),
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -109,7 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+# ELASTICSEARCH_DSL_SIGNAL_PROCESSOR = "apps.products.signals.SignalProcessor"
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
