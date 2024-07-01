@@ -12,6 +12,12 @@
 		<p>Категория: {{ item.category }}</p>
 		<p>Цена: {{ item.price }}</p>
 		<p>Осталось: {{ item.stock }}</p>
+		<form action="{% url 'cart:add_to_cart' product_uuid %}" method="post">
+			{% csrf_token %}
+			<input type="hidden" name="quantity" value="1">
+			<input type="hidden" name="update" value="False">
+			<button type="submit">Добавить в корзину</button>
+		</form>
 		<a class="btn btn-outline-success" href="{% url 'cart:add_to_cart' product_uuid %}">Добавить в корзину</a>
 	</div>
 </div>

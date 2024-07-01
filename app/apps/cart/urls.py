@@ -1,10 +1,11 @@
-from apps.cart import views
 from django.urls import path
+
+from apps.cart import views
 
 app_name = "cart"
 
 urlpatterns = [
-    path("", views.CartDetailView.as_view(), name="cart_detail"),
+    path("", views.cart_detail, name="cart_detail"),
     path("add/<uuid:product_uuid>/", views.add_to_cart, name="add_to_cart"),
-    path("delete/<int:item_id>/", views.delete_from_cart, name="delete_from_cart"),
+    path("remove/<uuid:product_uuid>/", views.cart_remove, name="cart_remove"),
 ]

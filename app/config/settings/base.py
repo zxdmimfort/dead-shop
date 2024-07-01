@@ -1,6 +1,5 @@
-from pathlib import Path
 import os
-
+from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -147,3 +146,6 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 LOGIN_REDIRECT_URL = "products:index"
 LOGIN_URL = "users:sign_in"
 LOGOUT_REDIRECT_URL = "products:index"
+
+
+CART_SESSION_ID = "cart"
