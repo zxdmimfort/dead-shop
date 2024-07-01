@@ -1,5 +1,6 @@
 from io import BytesIO
 import json
+import os
 import random
 from django.core.files.images import ImageFile
 from django.utils.text import slugify
@@ -8,16 +9,18 @@ from django.core.files.base import ContentFile
 from PIL import Image as PillImage
 from apps.categories.models import Category
 from apps.products.models import Product
+from unidecode import unidecode
 
 
 def import_products_from_json(name: str):
     with open(name, "r") as file:
         data = json.load(file)
     name = name.split('.')[0]
-    category = Category(name=name, slug=slugify(name))
+    category = Category(name=name, slug=unidecode(name))
+    print(category, category.slug)
     category.save()
     for i, product_data in enumerate(data, 1):
-        name = product_data["name"]
+        name = product_data["name"][:295] + '...'
         price = product_data["price"]
         img_url = product_data["preimage"]
         stock = random.randint(0, 100)
@@ -34,5 +37,9 @@ def import_products_from_json(name: str):
         else:
             print(f"Failed to download image for product {name}")
 
-name = "видеокарты.json"
-import_products_from_json(name)
+# import_products_from_json(name)
+files = os.listdir()
+for file in files:
+    if file.endswith('.json'):
+        print(f'--------{file}------')
+        import_products_from_json(file)
