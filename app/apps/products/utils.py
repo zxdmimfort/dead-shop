@@ -15,12 +15,12 @@ from unidecode import unidecode
 def import_products_from_json(name: str):
     with open(name, "r") as file:
         data = json.load(file)
-    name = name.split('.')[0]
+    name = name.split(".")[0]
     category = Category(name=name, slug=unidecode(name))
     print(category, category.slug)
     category.save()
     for i, product_data in enumerate(data, 1):
-        name = product_data["name"][:295] + '...'
+        name = product_data["name"][:295] + "..."
         price = product_data["price"]
         img_url = product_data["preimage"]
         stock = random.randint(0, 100)
@@ -31,15 +31,18 @@ def import_products_from_json(name: str):
             image_content = BytesIO(response.content)
             image = PillImage.open(image_content)
             image_file = ImageFile(image_content)
-            product = Product.objects.create(name=name, price=price, stock=12, category=category)
+            product = Product.objects.create(
+                name=name, price=price, stock=stock, category=category
+            )
             product.photo.save(str(product.pk) + ".jpg", image_file, save=True)
             product.save()
         else:
             print(f"Failed to download image for product {name}")
 
+
 # import_products_from_json(name)
 files = os.listdir()
 for file in files:
-    if file.endswith('.json'):
-        print(f'--------{file}------')
+    if file.endswith(".json"):
+        print(f"--------{file}------")
         import_products_from_json(file)
