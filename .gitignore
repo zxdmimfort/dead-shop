@@ -12,3 +12,4 @@ static/
 **/docker.env
 docker/certbot/
 **/project_data.json
+**/*.xlsx
