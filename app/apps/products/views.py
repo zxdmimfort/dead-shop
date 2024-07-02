@@ -12,6 +12,7 @@ class ProductsListView(ListView):
     context_object_name = "items"
     title = "Products"
     model = Product
+    paginate_by = 10
     # allow_empty = False
 
     def get_queryset(self):
