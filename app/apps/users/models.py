@@ -43,3 +43,8 @@ class Client(AbstractUser):
 
     def __str__(self):
         return self.first_name
+
+
+class UserProxy(models.Model):
+    user = models.OneToOneField(Client, on_delete=models.CASCADE, null=True)
+    session = models.CharField(max_length=40, null=True)
