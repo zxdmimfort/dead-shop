@@ -1,12 +1,9 @@
-.nav-link.dropdown-toggle {
-	background-color: #4CAF50; /* Зеленый фон */
-	color: white; /* Белый цвет текста */
+.navbar-nav .nav-link.dropdown-toggle {
+	background-color: #d1237a; /* Розовый фон */
+	color: #ffffff; /* Белый цвет текста */
 	padding: 10px 20px;
 	border-radius: 5px;
-  }
-.text-center.dropdown-toggle:hover {
-	background-color: #45a049; /* Более темный зеленый при наведении */
-  }
+}
 
 @media (max-width: 767.98px) {
 	.text-center{
@@ -16,4 +13,44 @@
 
 a.text-body {
 	text-decoration: none;
+}
+
+.btn-custom {
+    background-color: #e04281; /* Розовый фон */
+    color: white; /* Белый цвет текста */
+    border: none; /* Удалить границу */
+}
+
+.btn-custom:hover {
+    background-color: #e04281; /* Темный розовый при наведении */
+}
+
+.navbar-brand-custom {
+    color: #ffffff; /* Розовый цвет текста */
+    text-decoration: none; /* Удалить подчеркивание текста */
+}
+
+.navbar-brand-custom:hover {
+    color: #ffffff !important; /* Темно-красный цвет текста при наведении */
+    text-decoration: none; /* Удалить подчеркивание текста */
+}
+
+.navbar-brand-custom img {
+	width: 32px; /* Задайте нужный размер */
+	height: 32px;
+	margin-right: 5px; /* Отступ справа от картинки */
+}
+
+.gradient-container {
+    background: linear-gradient(to right, #e2669e, #e04281, #b4225d, #a70d67, #960459);
+    padding: 15px;
+    border-radius: 5px; /* Опционально, если хотите скругленные углы */
+}
+
+.navbar-nav .nav-link.active {
+    color: #c9c9c9; /* Красный цвет текста */
+}
+
+.nav-link.active:hover {
+    color: #ffffff; /* Темно-красный цвет текста при наведении */
 }
