@@ -1,12 +1,12 @@
 from django.db import models
 
 from apps.products.models import Product
-from apps.users.models import Client
+from apps.users.models import UserProxy
 
 
 # Create your models here.
 class Cart(models.Model):
-    client = models.OneToOneField(Client, on_delete=models.CASCADE, unique=True)
+    client = models.OneToOneField(UserProxy, on_delete=models.CASCADE, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
 

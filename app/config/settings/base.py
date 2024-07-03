@@ -147,3 +147,5 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 LOGIN_REDIRECT_URL = "products:index"
 LOGIN_URL = "users:sign_in"
 LOGOUT_REDIRECT_URL = "products:index"
+
+USER_SESSION_ID = "proxy_user"
