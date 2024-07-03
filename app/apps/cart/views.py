@@ -1,11 +1,9 @@
-import uuid
 from django.db.models.base import Model as Model
 from django.db import transaction
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import DetailView
 
 from apps.users.models import UserProxy
-from config.settings import settings
 from apps.products.models import Product
 
 from .models import Cart, CartItem
@@ -17,16 +15,7 @@ class CartDetailView(DetailView):
     model = Cart
 
     def get_object(self, queryset=None):
-        if not self.request.user.is_authenticated:
-            session = self.request.session
-            session_data = session.get(settings.USER_SESSION_ID)
-            if session_data is None:
-                session_data = {"uuid": str(uuid.uuid4())}
-                session[settings.USER_SESSION_ID] = session_data
-            session_uuid = session_data["uuid"]
-            user, _ = UserProxy.objects.get_or_create(session=session_uuid)
-        else:
-            user, _ = UserProxy.objects.get_or_create(user=self.request.user)
+        user, _, _ = UserProxy.objects.get_or_create(request=self.request)
         cart, _ = Cart.objects.get_or_create(client=user)
         return cart
 
@@ -42,19 +31,12 @@ class CartDetailView(DetailView):
 def add_to_cart(request, product_uuid):
     product = get_object_or_404(Product, id=product_uuid)
     with transaction.atomic():
-        if not request.user.is_authenticated:
-            session = request.session
-            session_data = session.get(settings.USER_SESSION_ID)
-            if not session_data:
-                session_data = {"uuid": str(uuid.uuid4())}
-                session[settings.USER_SESSION_ID] = session_data
-            session_uuid = session_data["uuid"]
-            user, _ = UserProxy.objects.get_or_create(session=session_uuid)
-        else:
-            user, _ = UserProxy.objects.get_or_create(user=request.user)
+        user, _, _ = UserProxy.objects.get_or_create(request=request)
         cart, _ = Cart.objects.get_or_create(client=user)
-        cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
-        if not created:
+        cart_item, item_created = CartItem.objects.get_or_create(
+            cart=cart, product=product
+        )
+        if not item_created:
             cart_item.amount += 1
         else:
             cart_item.amount = 1

@@ -4,7 +4,6 @@ from django.db import transaction
 from django.contrib import messages
 
 from apps.users.models import UserProxy
-from config.settings import settings
 from .models import Order, OrderItem
 from apps.cart.models import Cart, CartItem
 from django.shortcuts import render, redirect
@@ -14,35 +13,24 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 class CreateOrderView(View):
     def get(self, request):
-        if not request.user.is_authenticated:
-            session = request.session
-            session_data = session.get(settings.USER_SESSION_ID)
-            if not session_data:
-                raise Http404
-            session_uuid = session_data["uuid"]
-            user = UserProxy.objects.get(session=session_uuid)
-        else:
-            user, _ = UserProxy.objects.get_or_create(user=request.user)
+        user, user_created, anon = UserProxy.objects.get_or_create(request=request)
+        cart, cart_created = Cart.objects.get_or_create(client=user)
 
-        cart = Cart.objects.get(client=user)
-        if not cart.cartitem_set.exists():
+        # Здесь нужно отобразить страницу типа сначала нужно добавить товары в корзину
+        if user_created or cart_created or not cart.cartitem_set.exists():
             raise Http404
+
+        # Здесь нужно отрендерить страницу с вводом мыла для аноним. юзеров
+        if anon:
+            return render(request, "order/create_order.html", {"cart": cart})
         return render(request, "order/create_order.html", {"cart": cart})
 
     def post(self, request):
-        if not request.user.is_authenticated:
-            session = request.session
-            session_data = session.get(settings.USER_SESSION_ID)
-            if not session_data:
-                raise Http404
-            session_uuid = session_data["uuid"]
-            user = UserProxy.objects.get(session=session_uuid)
-        else:
-            user, _ = UserProxy.objects.get_or_create(user=request.user)
-
-        cart = Cart.objects.get(client=user)
+        user, _, anon = UserProxy.objects.get_or_create(request=request)
+        cart, _ = Cart.objects.get_or_create(client=user)
         cart_items = CartItem.objects.filter(cart=cart)
 
+        # TODO Не отображается ошибка
         for item in cart_items:
             product = item.product
             if product.stock < item.amount:
@@ -51,6 +39,7 @@ class CreateOrderView(View):
                 )
                 return redirect("cart:cart_detail")
 
+        # TODO Вот этот участок тоже в менеджер нужно вынести
         with transaction.atomic():
             order = Order.objects.create(user=user)
             cart_items = CartItem.objects.filter(cart=cart)
@@ -77,14 +66,5 @@ class UserOrdersView(LoginRequiredMixin, ListView):
     context_object_name = "orders"
 
     def get_queryset(self):
-        if self.request.user.is_authenticated:
-            user, _ = UserProxy.objects.get_or_create(user=self.request.user)
-        else:
-            session = self.request.session
-            session_data = session.get(settings.USER_SESSION_ID)
-            if not session_data:
-                raise Http404
-            session_uuid = session_data["uuid"]
-            user = UserProxy.objects.get(session=session_uuid)
-
+        user, _, _ = UserProxy.objects.get_or_create(request=self.request)
         return Order.objects.filter(user=user)
