@@ -1,7 +1,6 @@
 import uuid
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.base import Model as Model
+from django.db import transaction
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import DetailView
 
@@ -42,23 +41,24 @@ class CartDetailView(DetailView):
 
 def add_to_cart(request, product_uuid):
     product = get_object_or_404(Product, id=product_uuid)
-    if not request.user.is_authenticated:
-        session = request.session
-        session_data = session.get(settings.USER_SESSION_ID)
-        if not session_data:
-            session_data = {"uuid": session_uuid}
-            session[settings.USER_SESSION_ID] = session_data
-        session_uuid = session_data["uuid"]
-        user, _ = UserProxy.objects.get_or_create(session=session_uuid)
-    else:
-        user = UserProxy.objects.get_or_create(user=request.user)
-    cart, _ = Cart.objects.get_or_create(client=user)
-    cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
-    if not created:
-        cart_item.amount += 1
-    else:
-        cart_item.amount = 1
-    cart_item.save()
+    with transaction.atomic():
+        if not request.user.is_authenticated:
+            session = request.session
+            session_data = session.get(settings.USER_SESSION_ID)
+            if not session_data:
+                session_data = {"uuid": str(uuid.uuid4())}
+                session[settings.USER_SESSION_ID] = session_data
+            session_uuid = session_data["uuid"]
+            user, _ = UserProxy.objects.get_or_create(session=session_uuid)
+        else:
+            user, _ = UserProxy.objects.get_or_create(user=request.user)
+        cart, _ = Cart.objects.get_or_create(client=user)
+        cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
+        if not created:
+            cart_item.amount += 1
+        else:
+            cart_item.amount = 1
+        cart_item.save()
     referer_url = request.META.get("HTTP_REFERER")
     if referer_url:
         return redirect(referer_url)

@@ -1,6 +1,6 @@
 import uuid
 from django.db import models
-from django.conf import settings
+from apps.users.models import UserProxy
 from apps.products.models import Product
 
 
@@ -15,7 +15,7 @@ class Order(models.Model):
     ]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserProxy, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(
         max_length=20, choices=ORDER_STATUS_CHOICES, default="pending"

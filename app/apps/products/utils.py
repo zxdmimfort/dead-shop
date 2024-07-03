@@ -3,9 +3,7 @@ import json
 import os
 import random
 from django.core.files.images import ImageFile
-from django.utils.text import slugify
 import requests
-from django.core.files.base import ContentFile
 from PIL import Image as PillImage
 from apps.categories.models import Category
 from apps.products.models import Product
@@ -29,7 +27,7 @@ def import_products_from_json(name: str):
         response = requests.get(img_url)
         if response.status_code == 200:
             image_content = BytesIO(response.content)
-            image = PillImage.open(image_content)
+            image = PillImage.open(image_content) # noqa:F841
             image_file = ImageFile(image_content)
             product = Product.objects.create(
                 name=name, price=price, stock=stock, category=category
