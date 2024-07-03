@@ -46,8 +46,3 @@ def sign_in(request):
 def logout_view(request):
     logout(request)
     return redirect("products:index")
-
-def index(request):
-    login_form = LoginForm()
-    register_form = UserCreateForm()
-    return render(request, 'base.html', {'login_form': login_form, 'register_form': register_form})

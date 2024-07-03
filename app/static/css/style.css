@@ -26,17 +26,17 @@ a.text-body {
 }
 
 .navbar-brand-custom {
-    color: #ffffff; /* Розовый цвет текста */
+    color: #ffffff; /* Белый цвет текста */
     text-decoration: none; /* Удалить подчеркивание текста */
 }
 
 .navbar-brand-custom:hover {
-    color: #ffffff !important; /* Темно-красный цвет текста при наведении */
+    color: #ffffff !important; /* Белый цвет текста при наведении */
     text-decoration: none; /* Удалить подчеркивание текста */
 }
 
 .navbar-brand-custom img {
-	width: 32px; /* Задайте нужный размер */
+	width: 32px; /* Размер картинки */
 	height: 32px;
 	margin-right: 5px; /* Отступ справа от картинки */
 }
@@ -44,13 +44,12 @@ a.text-body {
 .gradient-container {
     background: linear-gradient(to right, #e2669e, #e04281, #b4225d, #a70d67, #960459);
     padding: 15px;
-    border-radius: 5px; /* Опционально, если хотите скругленные углы */
 }
 
 .navbar-nav .nav-link.active {
-    color: #c9c9c9; /* Красный цвет текста */
+    color: #c9c9c9; /* Серый цвет текста */
 }
 
 .nav-link.active:hover {
-    color: #ffffff; /* Темно-красный цвет текста при наведении */
+    color: #ffffff; /* Белый цвет текста при наведении */
 }
