@@ -16,10 +16,18 @@ class ProductsListView(ListView):
     # allow_empty = False
 
     def get_queryset(self):
-        cat_slug = self.kwargs.get("cat_slug", None)
-        if cat_slug:
-            return Product.objects.filter(category__slug=cat_slug)
-        return Product.objects.all()
+        query = self.request.GET.get("q")
+        print(query)
+        if query:
+            q = MultiMatch(query=query, fields=["name"], fuzziness="AUTO")
+            s = ProductDocument.search().query(q).to_queryset()
+            return s
+
+        else:
+            cat_slug = self.kwargs.get("cat_slug", None)
+            if cat_slug:
+                return Product.objects.filter(category__slug=cat_slug)
+            return Product.objects.all()
 
 
 class ProductsDetailView(DetailView):
@@ -34,7 +42,7 @@ class ProductsDetailView(DetailView):
         return context
 
 
-def search(request):
+"""def search(request):
     query = request.GET.get("q")
     context = {}
     if query:
@@ -43,4 +51,4 @@ def search(request):
         s = ProductDocument.search().query(q).to_queryset()
         context = {"products": s}
 
-    return render(request, "products/search_results.html", context)
+    return render(request, "products/search_results.html", context)"""

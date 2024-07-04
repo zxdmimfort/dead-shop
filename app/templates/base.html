@@ -34,7 +34,7 @@
                         <a class="nav-link active" href="{% url 'cart:cart_detail' %}">Корзина</a>
                     </li>
                 </ul>
-                <form class="d-flex mx-auto mb-2 mb-lg-0" role="search" method="get" action="{% url 'products:search' %}">
+                <form class="d-flex mx-auto mb-2 mb-lg-0" role="search" method="get" action="{% url 'products:index'%}">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="q">
                     <button class="btn btn-custom" type="submit">Search</button>
                 </form>

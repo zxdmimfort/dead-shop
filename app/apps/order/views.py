@@ -7,6 +7,7 @@ from django.views import View
 from django.views.generic import DetailView, ListView
 
 from apps.cart.models import Cart, CartItem
+from apps.users.models import UserProxy
 
 from .models import Order, OrderItem
 

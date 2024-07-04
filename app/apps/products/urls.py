@@ -15,5 +15,5 @@ urlpatterns = [
         views.ProductsDetailView.as_view(),
         name="detail_product",
     ),
-    path("search/", views.search, name="search"),
+    # path("search/", views.search, name="search"),
 ]
