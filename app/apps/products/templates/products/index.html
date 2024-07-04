@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
+{% include 'products/pagination.html' %}
 <h1 class="display-4">{{ title }}</h1>
-<div class="list-group">
+<div class="list-group mb-2">
 	{% for item in items %}
 	<div class="list-group-item">
 		<div class="row">
@@ -20,4 +21,5 @@
 	</div>
 	{% endfor %}
 </div>
+{% include 'products/pagination.html' %}
 {% endblock %}
