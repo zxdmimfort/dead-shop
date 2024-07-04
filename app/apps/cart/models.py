@@ -1,4 +1,4 @@
-from django.db import models
+"""from django.db import models
 
 from apps.products.models import Product
 from apps.users.models import Client
@@ -17,3 +17,4 @@ class CartItem(models.Model):
 
     def __str__(self):
         return self.product.name
+"""

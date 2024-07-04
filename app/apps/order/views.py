@@ -1,11 +1,13 @@
-from django.views import View
-from django.db import transaction
 from django.contrib import messages
-from .models import Order, OrderItem
-from apps.cart.models import Cart, CartItem
-from django.shortcuts import render, redirect
-from django.views.generic import DetailView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import transaction
+from django.shortcuts import redirect, render
+from django.views import View
+from django.views.generic import DetailView, ListView
+
+from apps.cart.models import Cart, CartItem
+
+from .models import Order, OrderItem
 
 
 class CreateOrderView(LoginRequiredMixin, View):
@@ -20,8 +22,10 @@ class CreateOrderView(LoginRequiredMixin, View):
         for item in cart_items:
             product = item.product
             if product.stock < item.amount:
-                messages.error(request, f'Недостаточно товаров в наличии: {product.name}')
-                return redirect('cart:cart_detail')
+                messages.error(
+                    request, f"Недостаточно товаров в наличии: {product.name}"
+                )
+                return redirect("cart:cart_detail")
 
         with transaction.atomic():
             order = Order.objects.create(user=request.user)
@@ -29,7 +33,9 @@ class CreateOrderView(LoginRequiredMixin, View):
             for item in cart_items:
                 item.product.stock -= item.amount
                 item.product.save()
-                OrderItem.objects.create(order=order, product=item.product, amount=item.amount)
+                OrderItem.objects.create(
+                    order=order, product=item.product, amount=item.amount
+                )
             cart_items.delete()
         return redirect("order:order_detail", order_id=order.id)
 
