@@ -1,14 +1,15 @@
-from django.http import Http404
-from django.views import View
-from django.db import transaction
 from django.contrib import messages
-
-from apps.users.models import UserProxy
-from .models import Order, OrderItem
-from apps.cart.models import Cart, CartItem
-from django.shortcuts import render, redirect
-from django.views.generic import DetailView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import transaction
+from django.http import Http404
+from django.shortcuts import redirect, render
+from django.views import View
+from django.views.generic import DetailView, ListView
+
+from apps.cart.models import Cart, CartItem
+from apps.users.models import UserProxy
+
+from .models import Order, OrderItem
 
 
 class CreateOrderView(View):
