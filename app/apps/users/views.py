@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.views.generic import CreateView
@@ -14,8 +14,8 @@ class UserCreateView(CreateView):
     model = Client
 
     def form_valid(self, form):
-        email = form.cleaned_data.get('email')
-        password = form.cleaned_data.get('password1')
+        email = form.cleaned_data.get("email")
+        password = form.cleaned_data.get("password1")
         user = authenticate(email=email, password=password)
         login(self.request, user)
         return JsonResponse({"success": True})
@@ -35,7 +35,9 @@ def sign_in(request):
                 login(request, user)
                 return JsonResponse({"success": True})
             else:
-                return JsonResponse({"success": False, "error": "Invalid email or password"})
+                return JsonResponse(
+                    {"success": False, "error": "Invalid email or password"}
+                )
         else:
             return JsonResponse({"success": False, "errors": form.errors})
     else:

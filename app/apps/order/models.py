@@ -16,6 +16,7 @@ class Order(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(UserProxy, on_delete=models.CASCADE)
+    email = models.EmailField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(
         max_length=20, choices=ORDER_STATUS_CHOICES, default="pending"
