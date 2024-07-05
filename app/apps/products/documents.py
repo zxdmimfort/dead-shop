@@ -10,8 +10,6 @@ class ProductDocument(Document):
         properties={"name": fields.TextField(), "slug": fields.TextField()}
     )
 
-    # category = fields.TextField(attr="category.slug")
-
     class Index:
         name = "products"
         settings = {"number_of_shards": 1, "number_of_replicas": 0}
