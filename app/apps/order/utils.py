@@ -1,4 +1,6 @@
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage
+from django.template.loader import get_template
+from django.urls import reverse
 
 from config.settings import settings
 
@@ -11,7 +13,15 @@ def send_order_status_email(order):
         host = settings.ALLOWED_HOSTS[0]
         schema = "https"
 
-    subject = f"Статус вашего заказа {order.id} был изменен."
-    message = f"Ваш заказ {schema}://{host}/order/my-orders/{order.id}/ сейчас {order.get_status_display()}."
-    recipient_list = [order.email]
-    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, recipient_list)
+    link = reverse("order:order_detail", args=[order.id])
+    template = get_template("order/email_notification.html")
+    context = {"order": order.get_serialized_data(), "link": f"{schema}://{host}{link}"}
+    message = template.render(context)
+    mail = EmailMessage(
+        subject=f"Статус вашего заказа {order.id} был изменен.",
+        body=message,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        to=[order.email],
+    )
+    mail.content_subtype = "html"
+    return mail.send()

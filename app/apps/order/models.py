@@ -25,11 +25,22 @@ class Order(models.Model):
     def __str__(self):
         return f"Order {self.id} by {self.user}"
 
+    def get_serialized_data(self):
+        return {
+            "user": self.user,
+            "id": self.id,
+            "email": self.email,
+            "created_at": self.created_at,
+            "status": self.status,
+            "items": self.items.all(),
+        }
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     amount = models.IntegerField(default=0)
+    price = models.FloatField(null=True)
 
     def __str__(self):
         return f"{self.amount} x {self.product.name} in order {self.order.id}"

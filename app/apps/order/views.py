@@ -58,7 +58,10 @@ class CreateOrderView(View):
                 item.product.stock -= item.amount
                 item.product.save()
                 OrderItem.objects.create(
-                    order=order, product=item.product, amount=item.amount
+                    order=order,
+                    product=item.product,
+                    amount=item.amount,
+                    price=item.product.price,
                 )
             cart_items.delete()
         return redirect("order:order_detail", order_id=order.id)

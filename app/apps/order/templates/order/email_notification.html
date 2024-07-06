@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <br>
+        {% if order.user %}
+        <h2>Thank you for your order {{ order.user.first_name }} {{ order.user.last_name }}</h2>
+        {% endif %}
+        <h3>Your Order ID: {{ order.id }}</h3>
+
+
+        <h3>Shipping Details:</h3>
+
+        Заказ создан: {{ order.created_at }} </br>
+        Текущее состояние: {{ order.status }} <br/>
+
+        <h3>
+            Contact Details:
+        </h3>
+        Email: {{ order.email }} <br/>
+
+        <h2>Order Details:</h2>
+        <a href="{{ link }}">{{ order.id }}</a>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <!-- <th>Total Price</th> -->
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for item in order.items %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.amount }}</td>
+                        <td>{{ item.product.price }}</td>
+                        <!-- <td>{{ item.total_price }}</td> -->
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+</html>
