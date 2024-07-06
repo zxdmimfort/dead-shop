@@ -8,7 +8,7 @@ from django.views.generic import DetailView, ListView
 
 from apps.cart.models import Cart, CartItem
 from apps.users.models import UserProxy
-
+from apps.products.models import Product
 from .models import Order, OrderItem
 
 
@@ -16,10 +16,6 @@ class CreateOrderView(View):
     def get(self, request):
         user, user_created, anon = UserProxy.objects.get_or_create(request=request)
         cart, cart_created = Cart.objects.get_or_create(client=user)
-
-        # Здесь нужно отобразить страницу типа сначала нужно добавить товары в корзину
-        if user_created or cart_created or not cart.cartitem_set.exists():
-            raise Http404
 
         # Здесь нужно отрендерить страницу с вводом мыла для аноним. юзеров
         if anon:
@@ -31,9 +27,8 @@ class CreateOrderView(View):
         cart, _ = Cart.objects.get_or_create(client=user)
         cart_items = CartItem.objects.filter(cart=cart)
 
-        # TODO Не отображается ошибка
         for item in cart_items:
-            product = item.product
+            product = Product.objects.get(id=item.product.id)
             if product.stock < item.amount:
                 messages.error(
                     request, f"Недостаточно товаров в наличии: {product.name}"

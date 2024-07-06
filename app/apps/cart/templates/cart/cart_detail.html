@@ -1,6 +1,15 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Корзина</h1>
+
+{% if messages %}
+<div class="alert alert-danger" role="alert">
+    {% for message in messages %}
+        {{ message }}
+    {% endfor %}
+</div>
+{% endif %}
+
 <div class="list-group">
 	{% for item in cart_items %}
 	<div class="list-group-item">
@@ -27,5 +36,9 @@
 	{% endfor %}
 </div>
 <h3>Итоговая цена: {{ total_price }} руб.</h3>
-<a class="btn btn-success" href="{% url 'order:create_order' %}">Оплатить</a>
+<form action="{% url 'order:create_order' %}" method="post">
+    {% csrf_token %}
+    <button class="btn btn-success" type="submit" {% if not cart_items %}disabled{% endif %}>Оплатить</button>
+</form>
+
 {% endblock %}
