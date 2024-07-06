@@ -33,7 +33,8 @@ class CreateOrderView(View):
             if form.is_valid():
                 email = form.cleaned_data.get("email")
             else:
-                raise Http404
+                messages.error(request, "Пожалуйста, введите корректный email.")
+                return redirect("cart:cart_detail")
         else:
             email = request.user.email
 
@@ -64,6 +65,7 @@ class CreateOrderView(View):
                     price=item.product.price,
                 )
             cart_items.delete()
+        print(email)    
         return redirect("order:order_detail", order_id=order.id)
 
 
