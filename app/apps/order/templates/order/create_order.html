@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Confirm your order</h1>
-<form method="post">
+<form method="post" action="{% url 'order:create_order' %}">
     {% csrf_token %}
+    {% if anon %}
+    {{ form.as_p }}
+    {% endif %}
     <button type="submit">Place order</button>
 </form>
 {% endblock %}
