@@ -34,7 +34,10 @@ def add_to_cart(request, product_uuid):
             cart=cart, product=product
         )
         if not item_created:
-            cart_item.amount += 1
+            if cart_item.amount < product.stock:
+                cart_item.amount += 1
+            else:
+                cart_item.amount = product.stock       
         else:
             cart_item.amount = 1
         cart_item.save()
