@@ -1,31 +1,136 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Корзина</h1>
-<div class="list-group">
-	{% for item in cart_items %}
-	<div class="list-group-item">
-		<div class="row">
-			{% if item.product.photo %}
-			<div class="col-6 col-md-4">
-				<img class="img-fluid rounded" src="{{ item.product.photo.url }}" width="500">
-			</div>
-			{% endif %}
-			<div class="col-6 col-md-8">
-				<p class="mb-2">Название: {{ item.product.name }}</p>
-				<p class="mb-2">Количество: {{ item.amount }}</p>
-				<form class="mb-2" action="{% url 'cart:delete_from_cart' item.id %}" method="post">
+<section class="h-100">
+  <div class="container h-100 py-5">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-10">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h3 class="fw-normal mb-0">Корзина</h3>
+        </div>
+
+        {% if messages %}
+        <div class="alert alert-danger" role="alert">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+		{% if cart_items %}
+        	{% for item in cart_items %}
+			<div class="card rounded-3 mb-4">
+			<div class="card-body p-4">
+				<div class="row d-flex justify-content-between align-items-center">
+				<div class="col-md-2 col-lg-2 col-xl-2">
+					{% if item.product.photo %}
+					<img src="{{ item.product.photo.url }}" class="img-fluid rounded-3" alt="{{ item.product.name }}">
+					{% endif %}
+				</div>
+				<div class="col-md-3 col-lg-3 col-xl-3">
+					<p class="lead fw-normal mb-2">{{ item.product.name }}</p>
+					<p><span class="text-muted">На складе: </span>{{ item.product.stock }}</p>
+				</div>
+				<div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+					<form action="{% url 'cart:decrease_quantity' item.id %}" method="post">
 					{% csrf_token %}
-					<button class="btn btn-outline-success" type="submit">Remove</button>
-				</form>
-				<form class="mb-2" action="{% url 'cart:add_to_cart' item.product.id %}" method="post">
+					<button class="btn btn-link px-2" type="submit">
+						<i class="fas fa-minus"></i>
+					</button>
+					</form>
+					<input id="form1" min="0" name="quantity" value="{{ item.amount }}" type="number" class="form-control form-control-sm" readonly/>
+					<form action="{% url 'cart:add_to_cart' item.product.id %}" method="post">
 					{% csrf_token %}
-					<button class="btn btn-outline-success" type="submit">Добавить еще 1</button>
-				</form>
+					<button class="btn btn-link px-2" type="submit">
+						<i class="fas fa-plus"></i>
+					</button>
+					</form>
+				</div>
+				<div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+					<h5 class="mb-0">{{ item.product.price }} руб.</h5>
+				</div>
+				<div class="col-md-1 col-lg-1 col-xl-1 text-end">
+					<form action="{% url 'cart:delete_from_cart' item.id %}" method="post">
+					{% csrf_token %}
+					<button class="btn btn-link text-danger" type="submit">
+						<i class="fas fa-trash fa-lg"></i>
+					</button>
+					</form>
+				</div>
+				</div>
 			</div>
-		</div>
-	</div>
-	{% endfor %}
-</div>
-<h3>Итоговая цена: {{ total_price }} руб.</h3>
-<a class="btn btn-success" href="{% url 'order:create_order' %}">Оплатить</a>
+			</div>
+        {% endfor %}
+		
+        <div class="card mb-4">
+			<div class="card-body p-4 d-flex flex-row">
+			  <h3>Итоговая цена: <span id="total-price">{{ total_price }} руб.</span></h3>
+			</div>
+		  </div>
+  
+		  {% if not request.user.is_authenticated %}
+		  <div class="card mb-4">
+			<div class="card-body p-4">
+			  <form method="post" id="email-form">
+				{% csrf_token %}
+				<label for="email">Email для оформления заказа:</label>
+				<input type="email" id="email" name="email" class="form-control" placeholder="Введите ваш email" required>
+			  </form>
+			</div>
+		  </div>
+		  {% endif %}
+
+		  
+		  <div class="card">
+			<div class="card-body">
+			  <form action="{% url 'order:create_order' %}" method="post" id="order-form">
+				{% csrf_token %}
+				{% if not request.user.is_authenticated %}
+				  <input type="hidden" name="email" id="hidden-email">
+				  <button class="btn btn-custom btn-block btn-lg" type="submit" id="pay-button" disabled>Оплатить</button>
+				{% else %}
+				  <button class="btn btn-custom btn-block btn-lg" type="submit" id="pay-button" {% if not cart_items %}disabled{% endif %}>Оплатить</button>
+				{% endif %}
+			  </form>
+			</div>
+		  </div>
+
+		<input type="hidden" id="cart-empty" value="false">
+        {% else %}
+          <p>Ваша корзина пуста.</p>
+          <input type="hidden" id="cart-empty" value="true">
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+	document.addEventListener('DOMContentLoaded', (event) => {
+	  const emailInput = document.getElementById('email');
+	  const payButton = document.getElementById('pay-button');
+	  const hiddenEmailInput = document.getElementById('hidden-email');
+  
+	  function checkPayButton() {
+		if (emailInput && emailInput.value.trim() === '') {
+		  payButton.disabled = true;
+		} else {
+		  payButton.disabled = false;
+		}
+	  }
+  
+	  if (emailInput) {
+		emailInput.addEventListener('input', function () {
+		  if (emailInput.value.trim() !== '') {
+			hiddenEmailInput.value = emailInput.value;
+			payButton.disabled = false;
+		  } else {
+			hiddenEmailInput.value = '';
+			payButton.disabled = true;
+		  }
+		});
+	  }
+	});
+  </script>
 {% endblock %}
