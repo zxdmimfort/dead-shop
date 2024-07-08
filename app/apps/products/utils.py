@@ -27,7 +27,7 @@ def import_products_from_json(name: str):
         response = requests.get(img_url)
         if response.status_code == 200:
             image_content = BytesIO(response.content)
-            image = PillImage.open(image_content) # noqa:F841
+            image = PillImage.open(image_content)  # noqa:F841
             image_file = ImageFile(image_content)
             product = Product.objects.create(
                 name=name, price=price, stock=stock, category=category
@@ -38,7 +38,6 @@ def import_products_from_json(name: str):
             print(f"Failed to download image for product {name}")
 
 
-# import_products_from_json(name)
 files = os.listdir()
 for file in files:
     if file.endswith(".json"):

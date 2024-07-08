@@ -51,7 +51,6 @@ class CreateOrderView(View):
                 )
                 return redirect("cart:cart_detail")
 
-        # TODO Вот этот участок тоже в менеджер нужно вынести
         with transaction.atomic():
             order = Order.objects.create(user=user, email=email)
             cart_items = CartItem.objects.filter(cart=cart)
@@ -65,7 +64,7 @@ class CreateOrderView(View):
                     price=item.product.price,
                 )
             cart_items.delete()
-        print(email)    
+        print(email)
         return redirect("order:order_detail", order_id=order.id)
 
 

@@ -15,6 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+from django.views.generic import RedirectView
 from config.settings import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -28,4 +29,5 @@ urlpatterns = [
     path("categories/", include("apps.categories.urls", namespace="categories")),
     path("cart/", include("apps.cart.urls", namespace="cart")),
     path("order/", include("apps.order.urls", namespace="order")),
+    path("", RedirectView.as_view(pattern_name="products:index")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

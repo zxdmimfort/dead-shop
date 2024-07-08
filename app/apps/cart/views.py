@@ -37,7 +37,7 @@ def add_to_cart(request, product_uuid):
             if cart_item.amount < product.stock:
                 cart_item.amount += 1
             else:
-                cart_item.amount = product.stock       
+                cart_item.amount = product.stock
         else:
             cart_item.amount = 1
         cart_item.save()
@@ -46,6 +46,7 @@ def add_to_cart(request, product_uuid):
         return redirect(referer_url)
     else:
         return redirect("cart:cart_detail")
+
 
 def decrease_quantity(request, item_id):
     cart_item = get_object_or_404(CartItem, id=item_id)
@@ -56,6 +57,7 @@ def decrease_quantity(request, item_id):
         else:
             cart_item.delete()
     return redirect("cart:cart_detail")
+
 
 def delete_from_cart(request, item_id):
     cart_item = CartItem.objects.get(id=item_id)
