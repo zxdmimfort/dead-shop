@@ -1,15 +1,12 @@
 from django.db import transaction
+from .models import Cart, CartItem
+from apps.users.models import UserProxy
+from apps.products.models import Product
+from django.views.generic import DetailView
 from django.db.models.base import Model as Model
 from django.shortcuts import get_object_or_404, redirect
-from django.views.generic import DetailView
-
-from apps.products.models import Product
-from apps.users.models import UserProxy
-
-from .models import Cart, CartItem
 
 
-# Create your views here.
 class CartDetailView(DetailView):
     template_name = "cart/cart_detail.html"
     model = Cart
@@ -37,7 +34,10 @@ def add_to_cart(request, product_uuid):
             cart=cart, product=product
         )
         if not item_created:
-            cart_item.amount += 1
+            if cart_item.amount < product.stock:
+                cart_item.amount += 1
+            else:
+                cart_item.amount = product.stock       
         else:
             cart_item.amount = 1
         cart_item.save()
@@ -47,6 +47,15 @@ def add_to_cart(request, product_uuid):
     else:
         return redirect("cart:cart_detail")
 
+def decrease_quantity(request, item_id):
+    cart_item = get_object_or_404(CartItem, id=item_id)
+    with transaction.atomic():
+        if cart_item.amount > 1:
+            cart_item.amount -= 1
+            cart_item.save()
+        else:
+            cart_item.delete()
+    return redirect("cart:cart_detail")
 
 def delete_from_cart(request, item_id):
     cart_item = CartItem.objects.get(id=item_id)

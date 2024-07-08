@@ -25,6 +25,12 @@ a.text-body {
     background-color: #e04281; /* Темный розовый при наведении */
 }
 
+.btn-custom:disabled {
+    background-color: #922550; /* Цвет для неактивной кнопки */
+    color: white;
+    opacity: 0.65; /* Слегка уменьшенная непрозрачность для обозначения отключенного состояния */
+  }
+
 .navbar-brand-custom {
     color: #ffffff; /* Белый цвет текста */
     text-decoration: none; /* Удалить подчеркивание текста */

@@ -6,6 +6,7 @@ from django.shortcuts import redirect, render
 from django.views import View
 from django.views.generic import DetailView, ListView
 
+from apps.order.forms import EmailForm
 from apps.cart.models import Cart, CartItem
 from apps.users.models import UserProxy
 from apps.products.models import Product
@@ -17,12 +18,27 @@ class CreateOrderView(View):
         user, user_created, anon = UserProxy.objects.get_or_create(request=request)
         cart, cart_created = Cart.objects.get_or_create(client=user)
 
-        # Здесь нужно отрендерить страницу с вводом мыла для аноним. юзеров
-        if anon:
-            return render(request, "order/create_order.html", {"cart": cart})
-        return render(request, "order/create_order.html", {"cart": cart})
+        # Здесь нужно отобразить страницу типа сначала нужно добавить товары в корзину
+        if user_created or cart_created or not cart.cartitem_set.exists():
+            raise Http404
+
+        return render(
+            request,
+            "order/create_order.html",
+            {"cart": cart, "anon": anon, "form": EmailForm},
+        )
 
     def post(self, request):
+        if not request.user.is_authenticated:
+            form = EmailForm(request.POST)
+            if form.is_valid():
+                email = form.cleaned_data.get("email")
+            else:
+                messages.error(request, "Пожалуйста, введите корректный email.")
+                return redirect("cart:cart_detail")
+        else:
+            email = request.user.email
+
         user, _, anon = UserProxy.objects.get_or_create(request=request)
         cart, _ = Cart.objects.get_or_create(client=user)
         cart_items = CartItem.objects.filter(cart=cart)
@@ -37,19 +53,23 @@ class CreateOrderView(View):
 
         # TODO Вот этот участок тоже в менеджер нужно вынести
         with transaction.atomic():
-            order = Order.objects.create(user=user)
+            order = Order.objects.create(user=user, email=email)
             cart_items = CartItem.objects.filter(cart=cart)
             for item in cart_items:
                 item.product.stock -= item.amount
                 item.product.save()
                 OrderItem.objects.create(
-                    order=order, product=item.product, amount=item.amount
+                    order=order,
+                    product=item.product,
+                    amount=item.amount,
+                    price=item.product.price,
                 )
             cart_items.delete()
+        print(email)    
         return redirect("order:order_detail", order_id=order.id)
 
 
-class OrderDetailView(LoginRequiredMixin, DetailView):
+class OrderDetailView(DetailView):
     model = Order
     template_name = "order/order_detail.html"
     context_object_name = "order"
