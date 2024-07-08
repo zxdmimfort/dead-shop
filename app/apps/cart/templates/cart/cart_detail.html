@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+
 <section class="h-100">
   <div class="container h-100 py-5">
     <div class="row d-flex justify-content-center align-items-center h-100">
@@ -40,6 +41,7 @@
 					</form>
 					<input id="form1" min="0" name="quantity" value="{{ item.amount }}" type="number" class="form-control form-control-sm" readonly/>
 					<form action="{% url 'cart:add_to_cart' item.product.id %}" method="post">
+
 					{% csrf_token %}
 					<button class="btn btn-link px-2" type="submit">
 						<i class="fas fa-plus"></i>

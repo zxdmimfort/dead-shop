@@ -9,6 +9,7 @@ from django.views.generic import DetailView, ListView
 from apps.order.forms import EmailForm
 from apps.cart.models import Cart, CartItem
 from apps.users.models import UserProxy
+from apps.products.models import Product
 from .models import Order, OrderItem
 
 
@@ -42,9 +43,8 @@ class CreateOrderView(View):
         cart, _ = Cart.objects.get_or_create(client=user)
         cart_items = CartItem.objects.filter(cart=cart)
 
-        # TODO Не отображается ошибка
         for item in cart_items:
-            product = item.product
+            product = Product.objects.get(id=item.product.id)
             if product.stock < item.amount:
                 messages.error(
                     request, f"Недостаточно товаров в наличии: {product.name}"
