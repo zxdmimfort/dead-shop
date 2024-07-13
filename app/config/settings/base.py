@@ -77,6 +77,26 @@ DATABASES = {
     }
 }
 
+AWS_ACCESS_KEY_ID = os.getenv("MINIO_ROOT_USER")
+AWS_SECRET_ACCESS_KEY = os.getenv("MINIO_SECRET_KEY")
+AWS_STORAGE_BUCKET_NAME = os.getenv("MINIO_BUCKET_NAME")
+AWS_S3_ENDPOINT_URL = os.getenv("MINIO_ENDPOINT")
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "bucket_name": AWS_STORAGE_BUCKET_NAME,
+            "access_key": AWS_ACCESS_KEY_ID,
+            "secret_key": AWS_SECRET_ACCESS_KEY,
+            },
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
+
+
 ELASTICSEARCH_DSL = {
     "default": {
         "hosts": f"http://{os.getenv('ELASTIC_HOST')}:{os.getenv('ELASTIC_PORT')}",  # Use https if TLS is enabled on Elasticsearch
