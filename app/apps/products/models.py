@@ -4,7 +4,7 @@ from django.db import models
 from apps.categories.models import Category
 
 def user_directory_path(instance, filename):
-    return f"product_{instance.id}/{filename}"
+    return f"products/{instance.id}.jpg"
 
 
 class Product(models.Model):

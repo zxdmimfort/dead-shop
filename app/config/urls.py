@@ -30,4 +30,6 @@ urlpatterns = [
     path("cart/", include("apps.cart.urls", namespace="cart")),
     path("order/", include("apps.order.urls", namespace="order")),
     path("", RedirectView.as_view(pattern_name="products:index")),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+if settings.USE_S3 == "TRUE":
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
