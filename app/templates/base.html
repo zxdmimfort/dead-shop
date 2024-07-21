@@ -10,13 +10,14 @@
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="shortcut icon" type="image/ico" href="{% static 'img/logo.ico' %}" >
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg  gradient-container mb-2">
         <div class="container-fluid">
             <a class="navbar-brand navbar-brand-custom" href="{% url 'products:index' %}">
-				<img src="{% static 'img/logo.png' %}" alt="Strawberry"> Strawberries
+				<img src="{% static 'img/logo.ico' %}" alt="Strawberry"> Strawberries
 			</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
