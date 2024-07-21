@@ -7,13 +7,12 @@ services:
       - "80:80"
       - "443:443"
     depends_on:
+      - minio
       - app
     volumes:
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./docker/certbot/conf:/etc/letsencrypt
       - ./docker/certbot/www:/var/www/certbot
-      - ./static:/app/static/
-      - ./media/:/app/media/
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
   certbot:
     image: certbot/certbot
@@ -23,22 +22,23 @@ services:
       - ./docker/certbot/conf:/etc/letsencrypt
       - ./docker/certbot/www:/var/www/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    depends_on:
+      - nginx
   app:
     build:
       context: .
       dockerfile: ./docker/app/Dockerfile
     container_name: app
     restart: unless-stopped
-    command: gunicorn --chdir ./app config.wsgi:application -w 2 --bind 0.0.0.0:8000
+    command: gunicorn --chdir ./app config.wsgi:application -w 8 --bind 0.0.0.0:8000
     depends_on:
       - db
       - elasticsearch
+      - minio
     env_file:
       - docker.env
     volumes:
       - ./db.json:/src/db.json
-      - ./static/:/src/static/
-      - ./media/:/src/media/
   elasticsearch:
     image: elasticsearch:8.9.2
     container_name: elastic
@@ -67,6 +67,17 @@ services:
       - docker.env
     volumes:
       - postgres_data:/var/lib/postgresql/data
+  minio:
+    image: docker.io/bitnami/minio
+    container_name: minio
+    restart: unless-stopped
+    ports:
+      - 9000:9000
+      - 9001:9001
+    volumes:
+      - /srv/dev-disk-by-uuid-b29ecc5f-b6c9-44b9-ad20-b1f4d55daff1/s3:/bitnami/minio/data
+    env_file:
+      - minio.env
 volumes:
   esdata:
     driver: local

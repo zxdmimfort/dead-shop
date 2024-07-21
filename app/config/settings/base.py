@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "mptt",
     "django_elasticsearch_dsl",
+    "storages",
 ]
 
 MIDDLEWARE = [
@@ -77,6 +78,62 @@ DATABASES = {
     }
 }
 
+
+USE_S3 = os.getenv("USE_S3") == "TRUE"
+
+if USE_S3:
+    AWS_ACCESS_KEY_ID = os.getenv("MINIO_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = os.getenv("MINIO_SECRET_KEY")
+    AWS_DEFAULT_ACL = None
+    AWS_STORAGE_BUCKET_NAME = os.getenv("MINIO_BUCKET_NAME")
+    AWS_S3_CUSTOM_DOMAIN = os.getenv("MINIO_S3_CUSTOM_DOMAIN")
+    AWS_S3_ENDPOINT_URL = os.getenv("MINIO_ENDPOINT")
+    AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
+    # s3 static settings
+    STATIC_LOCATION = "static"
+    STATIC_URL = f"{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/{STATIC_LOCATION}/"
+    STATICFILES_STORAGE = "config.storage_backends.StaticStorage"
+    # s3 public media settings
+    PUBLIC_MEDIA_LOCATION = "media"
+    MEDIA_URL = f"{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/{PUBLIC_MEDIA_LOCATION}/"
+    DEFAULT_FILE_STORAGE = "config.storage_backends.PublicMediaStorage"
+else:
+    STATIC_DIR = BASE_DIR.parent
+    STATIC_URL = "/static/"
+    STATIC_ROOT = STATIC_DIR / "static/"
+    MEDIA_URL = "/media/"
+    MEDIA_ROOT = STATIC_DIR / "media/"
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static/",
+]
+
+    # STORAGES = {
+    #     "default": {
+    #         "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+    #         "OPTIONS": {
+    #             "bucket_name": AWS_STORAGE_BUCKET_NAME,
+    #             "access_key": os.getenv("MINIO_ACCESS_KEY_ID"),
+    #             "secret_key": os.getenv("MINIO_SECRET_KEY"),
+    #             "endpoint_url": os.getenv("MINIO_ENDPOINT"),
+    #             "location": "media/",
+    #             "querystring_auth": False,
+    #             "use_ssl": False,
+    #             },
+    #     },
+    #     "staticfiles": {
+    #         # "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    #         "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+    #         "OPTIONS": {
+    #             "bucket_name": AWS_STORAGE_BUCKET_NAME,
+    #             "access_key": os.getenv("MINIO_ACCESS_KEY_ID"),
+    #             "secret_key": os.getenv("MINIO_SECRET_KEY"),
+    #             "endpoint_url": os.getenv("MINIO_ENDPOINT"),
+    #             # "location": "static/",
+    #         },
+    #     },
+    # }
+
 ELASTICSEARCH_DSL = {
     "default": {
         "hosts": f"http://{os.getenv('ELASTIC_HOST')}:{os.getenv('ELASTIC_PORT')}",  # Use https if TLS is enabled on Elasticsearch
@@ -114,21 +171,6 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.0/howto/static-files/
-
-STATIC_URL = "static/"
-AUTH_USER_MODEL = "users.Client"
-MEDIA_URL = "media/"
-
-STATIC_DIR = BASE_DIR.parent
-STATIC_ROOT = STATIC_DIR / "static/"
-MEDIA_ROOT = STATIC_DIR / "media/"
-
-STATICFILES_DIRS = [
-    BASE_DIR / "static/",
-]
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
@@ -148,4 +190,5 @@ LOGIN_REDIRECT_URL = "products:index"
 LOGIN_URL = "users:sign_in"
 LOGOUT_REDIRECT_URL = "products:index"
 
+AUTH_USER_MODEL = "users.Client"
 USER_SESSION_ID = "proxy_user"
