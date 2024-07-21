@@ -30,16 +30,15 @@ services:
       dockerfile: ./docker/app/Dockerfile
     container_name: app
     restart: unless-stopped
-    command: gunicorn --chdir ./app config.wsgi:application -w 2 --bind 0.0.0.0:8000
+    command: gunicorn --chdir ./app config.wsgi:application -w 8 --bind 0.0.0.0:8000
     depends_on:
       - db
       - elasticsearch
+      - minio
     env_file:
       - docker.env
     volumes:
       - ./db.json:/src/db.json
-      - ./static/:/src/static/
-      - ./media/:/src/media/
   elasticsearch:
     image: elasticsearch:8.9.2
     container_name: elastic
@@ -71,6 +70,7 @@ services:
   minio:
     image: docker.io/bitnami/minio
     container_name: minio
+    restart: unless-stopped
     ports:
       - 9000:9000
       - 9001:9001
