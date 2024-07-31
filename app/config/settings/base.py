@@ -94,7 +94,7 @@ if USE_S3:
     STATICFILES_STORAGE = "config.storage_backends.StaticStorage"
     # s3 public media settings
     PUBLIC_MEDIA_LOCATION = "media"
-    MEDIA_URL = f"{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/{PUBLIC_MEDIA_LOCATION}/"
+    MEDIA_URL = f"{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/{PUBLIC_MEDIA_LOCATION}/"  # noqa: E501
     DEFAULT_FILE_STORAGE = "config.storage_backends.PublicMediaStorage"
 else:
     STATIC_DIR = BASE_DIR.parent
@@ -135,7 +135,7 @@ STATICFILES_DIRS = [
 
 ELASTICSEARCH_DSL = {
     "default": {
-        "hosts": f"http://{os.getenv('ELASTIC_HOST')}:{os.getenv('ELASTIC_PORT')}",  # Use https if TLS is enabled on Elasticsearch
+        "hosts": f"http://{os.getenv('ELASTIC_HOST')}:{os.getenv('ELASTIC_PORT')}",  # Use https if TLS is enabled on Elasticsearch  # noqa: E501
         "http_auth": (os.getenv("ELASTIC_USER"), os.getenv("ELASTIC_PASSWORD")),
     },
 }
@@ -144,7 +144,7 @@ ELASTICSEARCH_DSL = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",  # noqa: E501
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",

@@ -12,7 +12,7 @@ from unidecode import unidecode
 
 
 def import_products_from_json(name: str):
-    with open(name, "r") as file:
+    with open(name) as file:
         data = json.load(file)
     name = name.split(".")[0]
     category = Category(name=name, slug=unidecode(name))
