@@ -1,8 +1,8 @@
 import uuid
-from django.contrib.auth.models import AbstractUser, BaseUserManager
-from django.db import models
 
 from config.settings import settings
+from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.db import models
 
 
 class ClientManager(BaseUserManager):

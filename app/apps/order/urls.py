@@ -1,6 +1,5 @@
-from django.urls import path
-
 from apps.order import views
+from django.urls import path
 
 app_name = "order"
 

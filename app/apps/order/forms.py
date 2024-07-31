@@ -1,6 +1,5 @@
-from django import forms
-
 from apps.order.models import Order
+from django import forms
 
 
 class EmailForm(forms.Form):

@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
+from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.http import JsonResponse
 from django.views.generic import CreateView
 
 from .forms import LoginForm, UserCreateForm

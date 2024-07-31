@@ -1,10 +1,11 @@
-from django.db import transaction
-from .models import Cart, CartItem
-from apps.users.models import UserProxy
 from apps.products.models import Product
-from django.views.generic import DetailView
+from apps.users.models import UserProxy
+from django.db import transaction
 from django.db.models.base import Model as Model
 from django.shortcuts import get_object_or_404, redirect
+from django.views.generic import DetailView
+
+from .models import Cart, CartItem
 
 
 class CartDetailView(DetailView):

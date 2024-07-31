@@ -1,6 +1,5 @@
-from django.contrib import admin
-
 from apps.products import models
+from django.contrib import admin
 
 
 @admin.register(models.Product)

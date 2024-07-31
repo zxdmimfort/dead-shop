@@ -1,6 +1,6 @@
+from apps.categories.models import Category
 from django.contrib import admin
 from mptt.admin import DraggableMPTTAdmin
-from apps.categories.models import Category
 
 
 @admin.register(Category)

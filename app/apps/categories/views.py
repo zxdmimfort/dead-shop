@@ -1,10 +1,10 @@
 from typing import Any
+
+from apps.categories.models import Category
 from django.http import HttpRequest
 from django.http.response import HttpResponse as HttpResponse
 from django.shortcuts import redirect
 from django.views.generic import ListView
-
-from apps.categories.models import Category
 
 
 class CategoryListView(ListView):

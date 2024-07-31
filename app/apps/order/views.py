@@ -1,3 +1,7 @@
+from apps.cart.models import Cart, CartItem
+from apps.order.forms import EmailForm
+from apps.products.models import Product
+from apps.users.models import UserProxy
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
@@ -6,10 +10,6 @@ from django.shortcuts import redirect, render
 from django.views import View
 from django.views.generic import DetailView, ListView
 
-from apps.order.forms import EmailForm
-from apps.cart.models import Cart, CartItem
-from apps.users.models import UserProxy
-from apps.products.models import Product
 from .models import Order, OrderItem
 
 

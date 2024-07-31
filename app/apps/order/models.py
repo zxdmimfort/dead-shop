@@ -1,7 +1,8 @@
 import uuid
-from django.db import models
-from apps.users.models import UserProxy
+
 from apps.products.models import Product
+from apps.users.models import UserProxy
+from django.db import models
 
 
 class Order(models.Model):

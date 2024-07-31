@@ -1,7 +1,6 @@
+from apps.products.models import Product
 from django.views.generic import DetailView, ListView
 from elasticsearch_dsl.query import MultiMatch
-
-from apps.products.models import Product
 
 from .documents import ProductDocument
 

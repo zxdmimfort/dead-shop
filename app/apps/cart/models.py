@@ -1,7 +1,6 @@
-from django.db import models
-
 from apps.products.models import Product
 from apps.users.models import UserProxy
+from django.db import models
 
 
 # Create your models here.

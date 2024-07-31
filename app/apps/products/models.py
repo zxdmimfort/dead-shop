@@ -1,7 +1,8 @@
 import uuid
-from django.db import models
 
 from apps.categories.models import Category
+from django.db import models
+
 
 def user_directory_path(instance, filename):
     return f"products/{instance.id}.jpg"

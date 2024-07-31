@@ -1,12 +1,13 @@
-from io import BytesIO
 import json
 import os
 import random
-from django.core.files.images import ImageFile
+from io import BytesIO
+
 import requests
-from PIL import Image as PillImage
 from apps.categories.models import Category
 from apps.products.models import Product
+from django.core.files.images import ImageFile
+from PIL import Image as PillImage
 from unidecode import unidecode
 
 
