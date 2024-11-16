@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-{% include 'products/pagination.html' %}
+{% comment %} {% include 'products/pagination.html' %} {% endcomment %}
 <h1 class="display-4">{{ title }}</h1>
-<div class="list-group mb-2">
-	{% for item in items %}
-	<div class="list-group-item">
+<div id="products" class="list-group mb-2">
+	{% for item in page_obj %}
+	<div class="list-group-item product">
 		<div class="row">
 			{% if item.photo %}
 			<div class="col-6 col-md-4">
@@ -18,8 +18,17 @@
 				<p>Здесь будут отзывы</p>
 			</div>
 		</div>
+		{% if page_obj.has_next and forloop.last %}
+		<span
+			hx-get="{% url 'products:index' %}?page={{ page_obj.next_page_number }}"
+			hx-swap="beforeend"
+			hx-target="#products"
+			hx-select=".product"
+			hx-trigger="revealed">
+		</span>
+		{% endif %}
 	</div>
 	{% endfor %}
 </div>
-{% include 'products/pagination.html' %}
+{% comment %} {% include 'products/pagination.html' %} {% endcomment %}
 {% endblock %}

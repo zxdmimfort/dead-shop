@@ -26,6 +26,11 @@ class ProductsListView(ListView):
                 return Product.objects.filter(category__slug=cat_slug)
             return Product.objects.all()
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # ipdb.set_trace()
+        return context
+
 
 class ProductsDetailView(DetailView):
     model = Product
@@ -37,3 +42,8 @@ class ProductsDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context["product_uuid"] = self.kwargs.get(self.pk_url_kwarg)
         return context
+
+    def get_queryset(self):
+        return Product.objects.select_related("category").only(
+            "name", "photo", "price", "stock", "category__slug", "category__name"
+        )
